@@ -1,59 +1,35 @@
 const express = require("express");
 const fs = require("fs");
 const router = express.Router();
-const path = require('path');
 let notes = require("../db/db.json");
-
-function getData(){
-let notes = fs.readFileSync(path.join(__dirname, '../db/db.json'), 'utf-8')
-return JSON.parse(notes);
-}
-//getData();
-
+console.log(notes)
 router.get("/api/notes", function(req, res){
-    res.json(getData());
+    res.json(notes);
 })
-
 router.post("/api/notes", function(req, res){
     //let newNote = req.body;
-    
-    let note = req.body;
-    if(test = true){
+    if(notes.length < 1){
         req.body.id = 1
-        console.log(note.length);
-        console.log(note);
-        
-        //write;
     } else {
-        let lastID = note.id + 1
-        req.body.id = parseInt(lastID)
-        console.log(req.body.id);
-        console.log(lastID);
-        //write;
+        let lastID = notes[notes.length -1].id
+        req.body.id = lastID + 1
     }
-    //notes.push(req.body);
-    fs.writeFileSync('./db/db.json', JSON.stringify(notes))
     console.log(req.body);
-    //notes.push(req.body);
-    
+    notes.push(req.body);
+    fs.writeFileSync('./db/db.json', JSON.stringify(notes))
     //path/name of file db.json
     //content notes (stringify)
-    res.json(getData);
+    res.json(notes);
 })
-
 router.delete('/api/notes/:_id', function (req, res){
-    
     let ID = req.params._id;
-    let newNotes = notes.filter(function (e){
+    notes = notes.filter(function (e){
        return e.id != ID ;
-        
     });
-    fs.writeFileSync('./db/db.json', JSON.stringify(newNotes))
-    res.json(getData);
-    console.log(ID)
-    console.log(newNotes)
+    fs.writeFileSync('./db/db.json', JSON.stringify(notes))
+    res.json(notes); 
+    console.log(ID);
     
-
  });
  
  //  notes.remove(id, function (err, notes){
