@@ -3,6 +3,7 @@ const fs = require("fs");
 const router = express.Router();
 let notes = require("../db/db.json");
 console.log(notes)
+
 router.get("/api/notes", function(req, res){
     res.json(notes);
 })
@@ -29,6 +30,7 @@ router.delete('/api/notes/:_id', function (req, res){
     fs.writeFileSync('./db/db.json', JSON.stringify(notes))
     res.json(notes); 
     console.log(ID);
+    console.log(notes)
     
  });
  
